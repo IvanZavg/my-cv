@@ -13,19 +13,48 @@ $(function(){
 		abMe_offsetTop = $abMe.offset().top,
 	 	mSkill_offsetTop = $mSkill.offset().top,
 	 	barOffset = parseInt($bar.css("top")) +  $bar.height();
-			
-	/*при перезагрузке страницы принудительный возврат скролла на начало страницы*/
-	/*window.onbeforeunload = function(e){
-		$html.scrollTop(0);
-	};*/
 
+/*---------------- События------------------------------------*/
+	
+	$(window).on("scroll", startScrolControl());// ОТСЛЕЖИВАНИЕ СКРОЛЛА ДЛЯ ГЕНЕРАЦИИ ПОЛЬЗОВАТЕЛЬСКОГО СОБЫТИЯ
+												// ПО НАСТУПЛЕНИИ КОТОРОГО МЕНЯЕТСЯ ЦВЕТ БАРА И ЗАПУСКАЕТСЯ АНИМАЦИЯ
+	$btnCV.on("click", function(){
+		openModlWindow("#cv");
+	});
 
+	$bar.on("click", toggleBarClass);
 
+	$bar.on("barToBlack", function(){
+		$bar.toggleClass("bar_black");	
+	});
 
-/*ОТСЛЕЖИВАНИЕ СКРОЛЛА ДЛЯ ГЕНЕРАЦИИ ПОЛЬЗОВАТЕЛЬСКОГО СОБЫТИЯ
-ПО НАСТУПЛЕНИИ КОТОРОГО МЕНЯЕТСЯ ЦВЕТ БАРА И ЗАПУСКАЕТСЯ АНИМАЦИЯ*/
+	$bar.on("barToWhite", function(){
+		$bar.toggleClass("bar_black");
+	});	
 
-	$(window).on("scroll", (function(){
+	$abMe.on("animateAbMe", animationAbMe);
+
+	$mSkill.on("animateSkills", animationSkills);
+
+	$("#nav-ab-me").on("click",function(){
+		scrollTo($abMe);
+		toggleBarClass();
+	});
+	$("#nav-my-skills").on("click",function(){
+		scrollTo($mSkill);
+		toggleBarClass();
+	});
+	$("#nav-my-cv").on("click",function(){
+		$btnCV.trigger("click");
+		toggleBarClass();
+	});
+	$("#nav-contact-details").on("click",function(){
+		openModlWindow("#contact-details");
+		toggleBarClass();
+	});
+
+/*-------------- Функции -------------------------------------*/
+	function startScrolControl(){
 
 		let posToggleBar = abMe_offsetTop - barOffset,
 		 	posAbMeAnimate = abMe_offsetTop + $abMe.height()/4,
@@ -79,46 +108,7 @@ $(function(){
 			}, 100);
 		};
 
-	})());
-
-/*---------------- События------------------------------------*/
-
-	$btnCV.on("click", function(){
-		openModlWindow("#cv");
-	});
-
-	$bar.on("click", toggleBarClass);
-
-	$bar.on("barToBlack", function(){
-		$bar.toggleClass("bar_black");	
-	});
-
-	$bar.on("barToWhite", function(){
-		$bar.toggleClass("bar_black");
-	});	
-
-	$abMe.on("animateAbMe", animationAbMe);
-
-	$mSkill.on("animateSkills", animationSkills);
-
-	$("#nav-ab-me").on("click",function(){
-		scrollTo($abMe);
-		toggleBarClass();
-	});
-	$("#nav-my-skills").on("click",function(){
-		scrollTo($mSkill);
-		toggleBarClass();
-	});
-	$("#nav-my-cv").on("click",function(){
-		$btnCV.trigger("click");
-		toggleBarClass();
-	});
-	$("#nav-contact-details").on("click",function(){
-		openModlWindow("#contact-details");
-		toggleBarClass();
-	});
-
-/*-------------- Функции -------------------------------------*/
+	}
 
 	function scrollTo(selector,duration=300){
 
